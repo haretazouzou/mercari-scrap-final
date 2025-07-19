@@ -187,6 +187,13 @@ export default function LoginPage() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <Image src={logo} alt="desc" width={100}/>
+          </motion.div>
+          <motion.div
+            className="flex items-center justify-center space-x-3 mb-4"
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               セラーナビ
             </h1>
