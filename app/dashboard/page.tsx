@@ -210,7 +210,7 @@ export default function DashboardPage() {
       // Free/Standard: Always show data freshness and cache message
       return {
         icon: <Database className="w-4 h-4 text-blue-500" />, 
-        text: `キャッシュデータを表示中（最終更新: ${daysSinceUpdate === 0 ? "本日" : `${daysSinceUpdate}日前`}）\n※データは最大1週間前のものです。リアルタイム検索はプロプランでご利用いただけます。`,
+        text: `${daysSinceUpdate === 0 ? "本日" : `${daysSinceUpdate}日前`}のデータを表示中、リアルタイム検索を行うとリアルタイムデータが表示されます。※リアルタイム検索はスタンダードプラン・プロプランでご利用いただけます`,
         color: "bg-blue-50 text-blue-700 border-blue-200",
       }
     }

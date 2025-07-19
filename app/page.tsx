@@ -131,7 +131,7 @@ export default function LoginPage() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            輸入商品分析ツールにログイン
+            セラーナビにログイン
           </motion.p>
         </div>
 
