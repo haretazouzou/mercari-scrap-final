@@ -62,7 +62,7 @@ const mockProducts: Product[] = [
     id: "1",
     title: "韓国ファッション レディース ワンピース",
     price: 2980,
-    image: "/placeholder.svg?height=200&width=200",
+    image: "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m43982021195_1.jpg?1749545086",
     category: "ファッション",
     subcategory: "レディース > ワンピース",
     salesCount: 150,
@@ -74,7 +74,7 @@ const mockProducts: Product[] = [
     id: "2",
     title: "中国製 スマートフォンケース iPhone用",
     price: 1580,
-    image: "/placeholder.svg?height=200&width=200",
+    image: "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m43982021195_1.jpg?1749545086",
     category: "家電・スマホ",
     subcategory: "スマートフォン > アクセサリー",
     salesCount: 89,
@@ -86,7 +86,7 @@ const mockProducts: Product[] = [
     id: "3",
     title: "海外ブランド キッチン用品セット",
     price: 4200,
-    image: "/placeholder.svg?height=200&width=200",
+    image: "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m43982021195_1.jpg?1749545086",
     category: "ホーム・キッチン",
     subcategory: "キッチン用品 > 調理器具",
     salesCount: 67,
@@ -556,103 +556,85 @@ export default function DashboardPage() {
           </Card>
         </motion.div>
 
-        {/* Results Section */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-          <Card className="p-6 bg-white/80 backdrop-blur-sm">
-            <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center">
-              <TrendingUp className="w-5 h-5 mr-2" />
-              検索結果
-            </h2>
+        {mockProducts.map((product, index) => (
+  <motion.div
+    key={product.id || index}
+    initial={{ opacity: 0, x: -20 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ delay: index * 0.1 }}
+    className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col sm:flex-row items-start relative"
+  >
+    {/* 🏆 Ranking Badge */}
+    <div className="absolute left-[-12px] top-4 sm:top-6 z-10">
+      <span
+        className={`text-white text-sm font-bold px-3 py-1 rounded-full shadow-md
+          ${index === 0 ? "bg-yellow-400" :
+            index === 1 ? "bg-gray-400" :
+            index === 2 ? "bg-amber-600" :
+            "bg-blue-500"}`}
+      >
+        {index === 0 ? "🥇 1位" :
+         index === 1 ? "🥈 2位" :
+         index === 2 ? "🥉 3位" :
+         `${index + 1}位`}
+      </span>
+    </div>
 
-            <AnimatePresence mode="wait">
-              {status === "fetching" ? (
-                <motion.div
-                  key="loading"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="text-center py-12"
-                >
-                  <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-600" />
-                  <p className="text-gray-600">
-                    {searchType === "realtime" ? "リアルタイムデータを取得しています..." : "データを取得しています..."}
-                  </p>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="results"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="space-y-4"
-                >
-                  {/* Sample Results - Mobile Optimized Cards */}
-                  {[1, 2, 3].map((item, index) => (
-                    <motion.div
-                      key={item}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col sm:flex-row items-start"
-                    >
-                      {/* Product Image */}
-                      <div
-                        className="w-full sm:w-32 h-48 sm:h-32 bg-gray-200 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
-                        onClick={() => handleProductDetail(mockProducts[item - 1])}
-                      >
-                        <img
-                          src={"https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m43982021195_1.jpg?1749545086"}
-                          alt="商品画像"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
+    {/* Product Image */}
+    <div
+      className="w-full sm:w-32 h-48 sm:h-32 bg-gray-200 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
+      onClick={() => handleProductDetail(product)}
+    >
+      <img
+        src={product.image}
+        alt="商品画像"
+        className="w-full h-full object-cover"
+      />
+    </div>
 
-                      {/* Product Details */}
-                      <div className="p-4 flex-1">
-                        <h3 className="text-lg font-semibold text-gray-800">{mockProducts[item - 1].title}</h3>
-                        <p className="text-gray-600 text-sm mb-2">
-                          {mockProducts[item - 1].category} &gt; {mockProducts[item - 1].subcategory}
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <div className="flex flex-col">
-                            <span className="text-xl font-bold text-blue-600">
-                              ¥{mockProducts[item - 1].price.toLocaleString()}
-                            </span>
-                            <span className="text-gray-500 text-xs">{getDataFreshness(mockProducts[item - 1])}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <TrendingUp className="w-4 h-4 text-green-500" />
-                            <span className="text-sm text-gray-600">{mockProducts[item - 1].salesCount}+ 件</span>
-                          </div>
-                        </div>
-                      </div>
+    {/* Product Details */}
+    <div className="p-4 flex-1">
+      <h3 className="text-lg font-semibold text-gray-800">{product.title}</h3>
+      <p className="text-gray-600 text-sm mb-2">
+        {product.category} &gt; {product.subcategory}
+      </p>
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col">
+          <span className="text-xl font-bold text-blue-600">
+            ¥{product.price.toLocaleString()}
+          </span>
+          <span className="text-gray-500 text-xs">
+            {getDataFreshness(product)}
+          </span>
+        </div>
+        <div className="flex items-center space-x-1">
+          <TrendingUp className="w-4 h-4 text-green-500" />
+          <span className="text-sm text-gray-600">{product.salesCount}+ 件</span>
+        </div>
+      </div>
+    </div>
 
-                      {/* Action Button */}
-                      <div className="flex sm:flex-col gap-2 mt-3 sm:mt-0 sm:ml-4">
-                        <Button
-                          size="sm"
-                          variant="outline" 
-                          className="flex-1 sm:flex-none bg-transparent w-full sm:ml-[-2px] mt-[2px]"
-                          onClick={() => handleProductDetail(mockProducts[item - 1])}
-                        >
-                          詳細
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 w-full sm:ml-[-2px] mt-[2px]"
-                          onClick={() => handleCompetitorAnalysis(mockProducts[item - 1])}
-                        >
-                          競合分析
-                        </Button>
-                      </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </Card>
-        </motion.div>
+    {/* Action Buttons */}
+    <div className="flex sm:flex-col gap-2 mt-3 sm:mt-0 sm:ml-4">
+      <Button
+        size="sm"
+        variant="outline"
+        className="flex-1 sm:flex-none bg-transparent w-full sm:ml-[-2px] mt-[2px]"
+        onClick={() => handleProductDetail(product)}
+      >
+        詳細
+      </Button>
+      <Button
+        size="sm"
+        variant="outline"
+        className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white w-full sm:ml-[-2px] mt-[2px]"
+        onClick={() => handleCompetitorAnalysis(product)}
+      >
+        競合分析
+      </Button>
+    </div>
+  </motion.div>
+))}
 
         {/* Modals */}
         <ProductDetailModal
