@@ -354,7 +354,7 @@ export default function DashboardPage() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => window.location.href = "/account/plan"}>
                     <Crown className="mr-2 h-4 w-4" />
-                    <span>プラン更新</span>
+                    <span>プラン変更</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => window.location.href = "/account/settings"}>
                     <Settings className="mr-2 h-4 w-4" />

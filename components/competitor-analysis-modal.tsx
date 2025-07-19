@@ -197,17 +197,6 @@ export function CompetitorAnalysisModal({ product, isOpen, onClose }: Competitor
                 </SelectContent>
               </Select>
             </div>
-
-            <Button
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-              variant="outline"
-              size="sm"
-              className="flex items-center space-x-2 bg-transparent"
-            >
-              <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`} />
-              <span>データ更新</span>
-            </Button>
           </div>
 
           {/* Competitors List */}

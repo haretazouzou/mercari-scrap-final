@@ -251,11 +251,11 @@ export default function PlanPage() {
               </div>
               <div>
                 <h4 className="font-semibold text-gray-800 mb-2">解約はいつでも可能ですか？</h4>
-                <p className="text-gray-600">はい、いつでも解約できます。解約後も月末まではサービスをご利用いただけます。</p>
+                <p className="text-gray-600">はい、いつでも解約できます。解約後は即時にサービスの利用ができなくなります。</p>
               </div>
               <div>
                 <h4 className="font-semibold text-gray-800 mb-2">無料トライアルはありますか？</h4>
-                <p className="text-gray-600">スタンダード・プロプランには7日間の無料トライアルが付いています。</p>
+                <p className="text-gray-600">プロプランを7日間無料で利用でき、7日間経過後はフリープランに自動で移行します。</p>
               </div>
             </div>
           </Card>
