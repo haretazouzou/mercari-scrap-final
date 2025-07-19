@@ -94,6 +94,18 @@ const mockProducts: Product[] = [
     mercariUrl: "https://mercari.com/jp/items/m12345678903",
     lastUpdated: new Date(Date.now() - 1 * 60 * 60 * 1000), // 1 hour ago
   },
+  {
+    id: "4",
+    title: "海外ブランド キッチン用品セット",
+    price: 3500,
+    image: "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m43982021195_1.jpg?1749545086",
+    category: "ホーム・キッチン",
+    subcategory: "キッチン用品 > 調理器具",
+    salesCount: 67,
+    rating: 4.8,
+    mercariUrl: "https://mercari.com/jp/items/m12345678903",
+    lastUpdated: new Date(Date.now() - 1 * 60 * 60 * 1000), // 1 hour ago
+  },
 ]
 
 export default function DashboardPage() {
