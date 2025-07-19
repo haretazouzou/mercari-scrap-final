@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import { getDb } from "@/lib/mongodb"
 import jwt from "jsonwebtoken"
 import { OAuth2Client } from "google-auth-library"
-import { ObjectId, Document, WithId } from "mongodb"
+import { WithId, Document } from "mongodb"
 
 const JWT_SECRET = process.env.JWT_SECRET || "changeme"
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || ""
@@ -17,15 +17,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   let ticket
   try {
     ticket = await client.verifyIdToken({ idToken, audience: GOOGLE_CLIENT_ID })
-  } catch (e) {
+  } catch {
     return res.status(401).json({ error: "Invalid Google token" })
   }
 
   const payload = ticket.getPayload()
-  if (!payload || !payload.email) return res.status(400).json({ error: "Google account missing email" })
+  if (!payload || !payload.email) return res.status(400).json({ error: "Missing email in Google profile" })
 
   const db = await getDb()
-
   let user = await db.collection("users").findOne({ email: payload.email }) as WithId<Document> | null
 
   if (user) {
@@ -48,19 +47,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 
-  if (!user) return res.status(500).json({ error: "User creation failed" })
-
   const token = jwt.sign(
-    {
-      userId: user._id,
-      email: user.email,
-      plan: user.plan,
-    },
+    { userId: user._id, email: user.email, plan: user.plan },
     JWT_SECRET,
     { expiresIn: "7d" }
   )
 
-  res.status(200).json({
+  return res.status(200).json({
     token,
     user: {
       name: user.name,
