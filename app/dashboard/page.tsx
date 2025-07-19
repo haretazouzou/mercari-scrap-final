@@ -351,7 +351,9 @@ export default function DashboardPage() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => {
                     if (typeof window !== 'undefined') {
-                      localStorage.removeItem('auth-session')
+                      localStorage.removeItem('auth-session');
+                      localStorage.removeItem('auth-user');
+                      localStorage.removeItem('auth-token');
                       window.location.href = '/'
                     }
                   }}>
