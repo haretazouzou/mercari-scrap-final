@@ -113,28 +113,40 @@ export default function LoginPage() {
       >
         {/* Header */}
         <div className="text-center mb-8">
-          <motion.div
-            className="flex items-center justify-center space-x-3 mb-4"
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <Image src={logo} alt="desc" width={100}/>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              セラーナビ
-            </h1>
-          </motion.div>
+  {/* Logo - Separate Block */}
+  <motion.div
+    className="w-full flex justify-center mb-3"
+    initial={{ opacity: 0, y: -10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.4, delay: 0.1 }}
+  >
+    <div className="block">
+      <Image src={logo} alt="Logo" width={100} height={100} />
+    </div>
+  </motion.div>
 
-          <motion.p
-            className="text-gray-600"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-          >
-            セラーナビにログイン
-          </motion.p>
-        </div>
+  {/* Title - Separate Block */}
+  <motion.div
+    className="w-full flex justify-center mb-2"
+    initial={{ opacity: 0, y: -10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.4, delay: 0.2 }}
+  >
+    <h1 className="text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+      セラーナビ
+    </h1>
+  </motion.div>
 
+  {/* Subtitle */}
+  <motion.p
+    className="text-gray-600"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 0.4 }}
+  >
+    アカウントにログインしてください
+  </motion.p>
+</div>
         {/* Login Form */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
