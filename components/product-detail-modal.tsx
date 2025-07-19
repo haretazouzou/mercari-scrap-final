@@ -59,13 +59,6 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
     { date: "2025-01-13", price: 2980 },
     { date: "2025-01-14", price: 2850 },
   ]
-
-  const mockSimilarProducts = [
-    { id: "s1", title: "類似商品 1", price: 2800, image: "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m43982021195_1.jpg?1749545086" },
-    { id: "s2", title: "類似商品 2", price: 3200, image: "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m43982021195_1.jpg?1749545086" },
-    { id: "s3", title: "類似商品 3", price: 2650, image: "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m43982021195_1.jpg?1749545086" },
-  ]
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -156,7 +149,6 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
               {[
                 { id: "overview", label: "概要", icon: <Eye className="w-4 h-4" /> },
                 { id: "history", label: "価格履歴", icon: <TrendingUp className="w-4 h-4" /> },
-                { id: "similar", label: "類似商品", icon: <BarChart3 className="w-4 h-4" /> },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -267,30 +259,6 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
                             </div>
                           )}
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-              </motion.div>
-            )}
-
-            {activeTab === "similar" && (
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-                <Card className="p-4">
-                  <h4 className="font-medium mb-4">類似商品</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {mockSimilarProducts.map((similar) => (
-                      <div key={similar.id} className="border rounded-lg p-3 hover:shadow-md transition-shadow">
-                        <img
-                          src={similar.image || "/placeholder.svg"}
-                          alt={similar.title}
-                          className="w-full h-20 object-cover rounded mb-2"
-                        />
-                        <h5 className="font-medium text-sm mb-1">{similar.title}</h5>
-                        <div className="text-blue-600 font-bold">¥{similar.price.toLocaleString()}</div>
-                        <Button size="sm" variant="outline" className="w-full mt-2 bg-transparent">
-                          詳細を見る
-                        </Button>
                       </div>
                     ))}
                   </div>
