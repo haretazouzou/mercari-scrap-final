@@ -199,15 +199,6 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
                     </div>
                     <div className="text-sm text-gray-500">先週比</div>
                   </Card>
-
-                  <Card className="p-4">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Package className="w-4 h-4 text-purple-600" />
-                      <span className="font-medium">在庫状況</span>
-                    </div>
-                    <div className="text-2xl font-bold text-purple-600">良好</div>
-                    <div className="text-sm text-gray-500">推定在庫数: 25個</div>
-                  </Card>
                 </div>
 
                 <Card className="p-4">

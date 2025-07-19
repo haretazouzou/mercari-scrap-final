@@ -331,14 +331,14 @@ export default function SettingsPage() {
           <Card className="p-6 bg-white/80 backdrop-blur-sm">
             <div className="flex items-center space-x-3 mb-6">
               <AlertTriangle className="w-6 h-6 text-red-600" />
-              <h2 className="text-xl font-semibold text-gray-800">アカウント管理</h2>
+              <h2 className="text-xl font-semibold text-gray-800">解約</h2>
             </div>
 
             <div className="space-y-4">
               <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                 <h3 className="font-semibold text-red-800 mb-2">アカウント削除</h3>
                 <p className="text-red-700 text-sm mb-4">
-                  アカウントを削除すると、すべてのデータが完全に削除され、復元することはできません。
+                解約するとアカウントが削除され、復元することはできません
                 </p>
                 <Button
                   onClick={handleDeleteAccount}
