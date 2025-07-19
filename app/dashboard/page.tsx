@@ -686,7 +686,7 @@ export default function DashboardPage() {
             <Button variant="ghost" className="justify-start w-full rounded-none py-4 text-left" onClick={() => { window.location.href = "/account/settings"; setAccountSheetOpen(false) }}>
               <Settings className="mr-2 h-5 w-5" />設定
             </Button>
-            <Button variant="ghost" className="justify-start w-full rounded-none py-4 text-left text-red-600" onClick={() => { localStorage.removeItem('auth-session'); window.location.href = '/'; setAccountSheetOpen(false) }}>
+            <Button variant="ghost" className="justify-start w-full rounded-none py-4 text-left text-red-600" onClick={() => { localStorage.removeItem('auth-session');localStorage.removeItem('auth-token');localStorage.removeItem('auth-user'); window.location.href = '/'; setAccountSheetOpen(false) }}>
               <LogOut className="mr-2 h-5 w-5" />ログアウト
             </Button>
           </div>
