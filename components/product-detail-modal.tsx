@@ -76,7 +76,7 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
             <div className="space-y-4">
               <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                 <img
-                  src={"https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m43982021195_1.jpg?1749545086" || "/placeholder.svg"}
+                  src={product.image || "/placeholder.svg"}
                   alt={product.title}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />

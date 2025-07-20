@@ -55,58 +55,68 @@ interface Product {
   rating: number
   mercariUrl: string
   lastUpdated: Date
+  totalCompetitorSalesAmount: number
+  totalCompetitorSalesCount: number
 }
 
 const mockProducts: Product[] = [
   {
     id: "1",
-    title: "韓国ファッション レディース ワンピース",
+    title: "ファッション レディース ワンピース",
     price: 2980,
-    image: "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m43982021195_1.jpg?1749545086",
+    image: "https://static.mercdn.net/c!/w=240/thumb/photos/m92170929682_1.jpg?1708755165",
     category: "ファッション",
     subcategory: "レディース > ワンピース",
     salesCount: 150,
     rating: 4.5,
-    mercariUrl: "https://mercari.com/jp/items/m12345678901",
-    lastUpdated: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+    mercariUrl: "https://jp.mercari.com/item/m92170929682",
+    lastUpdated: new Date(Date.now() - 2 * 60 * 60 * 1000),
+    totalCompetitorSalesAmount: 745000, // new
+    totalCompetitorSalesCount: 320,     // new
   },
   {
     id: "2",
     title: "中国製 スマートフォンケース iPhone用",
     price: 1580,
-    image: "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m43982021195_1.jpg?1749545086",
+    image: "https://static.mercdn.net/c!/w=240/thumb/photos/m44868250672_1.jpg?1726409701",
     category: "家電・スマホ",
     subcategory: "スマートフォン > アクセサリー",
     salesCount: 89,
     rating: 4.2,
-    mercariUrl: "https://mercari.com/jp/items/m12345678902",
-    lastUpdated: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hours ago
+    mercariUrl: "https://jp.mercari.com/item/m44868250672",
+    lastUpdated: new Date(Date.now() - 5 * 60 * 60 * 1000),
+    totalCompetitorSalesAmount: 230000,
+    totalCompetitorSalesCount: 150,
   },
   {
     id: "3",
     title: "海外ブランド キッチン用品セット",
     price: 4200,
-    image: "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m43982021195_1.jpg?1749545086",
+    image: "https://static.mercdn.net/c!/w=240/thumb/photos/m67254787320_1.jpg?1752676693",
     category: "ホーム・キッチン",
     subcategory: "キッチン用品 > 調理器具",
     salesCount: 67,
     rating: 4.8,
-    mercariUrl: "https://mercari.com/jp/items/m12345678903",
-    lastUpdated: new Date(Date.now() - 1 * 60 * 60 * 1000), // 1 hour ago
+    mercariUrl: "https://jp.mercari.com/item/m67254787320",
+    lastUpdated: new Date(Date.now() - 1 * 60 * 60 * 1000),
+    totalCompetitorSalesAmount: 520000,
+    totalCompetitorSalesCount: 118,
   },
   {
     id: "4",
-    title: "海外ブランド キッチン用品セット",
-    price: 3500,
-    image: "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m43982021195_1.jpg?1749545086",
+    title: "₽6,662.93",
+    price: 1000,
+    image: "https://static.mercdn.net/c!/w=240/thumb/photos/m94258161143_1.jpg?1752498246",
     category: "ホーム・キッチン",
     subcategory: "キッチン用品 > 調理器具",
     salesCount: 67,
     rating: 4.8,
-    mercariUrl: "https://mercari.com/jp/items/m12345678903",
-    lastUpdated: new Date(Date.now() - 1 * 60 * 60 * 1000), // 1 hour ago
+    mercariUrl: "https://jp.mercari.com/item/m94258161143",
+    lastUpdated: new Date(Date.now() - 1 * 60 * 60 * 1000),
+    totalCompetitorSalesAmount: 520000,
+    totalCompetitorSalesCount: 118,
   },
-]
+];
 
 export default function DashboardPage() {
   const { user, isLoading } = useAuth()
@@ -606,25 +616,31 @@ export default function DashboardPage() {
 
     {/* Product Details */}
     <div className="p-4 flex-1">
-      <h3 className="text-lg font-semibold text-gray-800">{product.title}</h3>
-      <p className="text-gray-600 text-sm mb-2">
-        {product.category} &gt; {product.subcategory}
-      </p>
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col">
-          <span className="text-xl font-bold text-blue-600">
-            ¥{product.price.toLocaleString()}
-          </span>
-          <span className="text-gray-500 text-xs">
-            {getDataFreshness(product)}
-          </span>
-        </div>
-        <div className="flex items-center space-x-1">
-          <TrendingUp className="w-4 h-4 text-green-500" />
-          <span className="text-sm text-gray-600">{product.salesCount}+ 件</span>
-        </div>
-      </div>
+  <h3 className="text-lg font-semibold text-gray-800">{mockProducts[index].title}</h3>
+  <p className="text-gray-600 text-sm mb-2">
+    {mockProducts[index].category} &gt; {mockProducts[index].subcategory}
+  </p>
+
+  <div className="flex items-center justify-between">
+    <div className="flex flex-col">
+      <span className="text-xl font-bold text-blue-600">
+        ¥{mockProducts[index].price.toLocaleString()}
+      </span>
+      <span className="text-gray-500 text-xs">{getDataFreshness(mockProducts[index])}</span>
     </div>
+
+    <div className="flex items-center space-x-1">
+      <TrendingUp className="w-4 h-4 text-green-500" />
+      <span className="text-sm text-gray-600">{mockProducts[index].salesCount}+ 件</span>
+    </div>
+    <div className="mt-2 text-sm text-gray-600 space-y-1">
+    <p>競合の総売上金額: <span className="font-semibold text-blue-700">¥{mockProducts[index].totalCompetitorSalesAmount.toLocaleString()}</span></p>
+    <p>競合の総売上個数: <span className="font-semibold text-blue-700">{mockProducts[index].totalCompetitorSalesCount} 件</span></p>
+  </div>
+  </div>
+
+  {/* NEW - Competitor Total Info */}
+</div>
 
     {/* Action Buttons */}
     <div className="flex sm:flex-col gap-2 mt-3 sm:mt-0 sm:ml-4">
