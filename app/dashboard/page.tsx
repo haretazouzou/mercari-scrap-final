@@ -97,7 +97,7 @@ const mockProducts: Product[] = [
     subcategory: "キッチン用品 > 調理器具",
     salesCount: 67,
     rating: 4.8,
-    mercariUrl: "https://jp.mercari.com/item/m67254787320",
+    mercariUrl: "https://mercari.com/jp/items/m12345678903",
     lastUpdated: new Date(Date.now() - 1 * 60 * 60 * 1000),
     totalCompetitorSalesAmount: 520000,
     totalCompetitorSalesCount: 118,
