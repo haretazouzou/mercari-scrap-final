@@ -204,7 +204,7 @@ export default function DashboardPage() {
         setProducts(data.items || []) // <--- use fetched products
         setStatus("complete")
         setLastUpdated(new Date())
-        console.log("Failed to fetch from DB:", data.items)
+        console.log("Seccessed from DB:", data.items)
       } catch (error) {
         console.error("Failed to fetch from DB:", error)
         setStatus("error")

@@ -16,24 +16,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const db = client.db("mercari")
     const collection = db.collection("products")
 
-    const query: any = {
-      Price: { $gte: price_min, $lte: price_max },
-    }
+    // Fetch all items first (since Price is stored as a string)
+    const rawItems = await collection.find().limit(1000).toArray()
 
-    if (keyword) {
-      const keywordRegex = { $regex: keyword, $options: "i" }
-      query.$or = [
-        { Title: keywordRegex },
-        { Subcategory: keywordRegex },
-        { Category: keywordRegex },
-      ]
-    }
+    // Filter in memory
+    const keywordRegex = keyword ? new RegExp(keyword, "i") : null
 
-    if (category) {
-      query.Subcategory = category
-    }
+    const items = rawItems.filter((item) => {
+      // Clean "1,500円" → 1500
+      const numericPrice = typeof item.Price === "string"
+        ? parseInt(item.Price.replace(/[^\d]/g, ""))
+        : item.Price
 
-    const items = await collection.find().limit(600).toArray()
+      const priceValid =
+        typeof price_min === "number" &&
+        typeof price_max === "number"
+          ? numericPrice >= price_min && numericPrice <= price_max
+          : true
+
+      const keywordValid = keywordRegex
+        ? keywordRegex.test(item.Title || "") ||
+          keywordRegex.test(item.Category || "") ||
+          keywordRegex.test(item.Subcategory || "")
+        : true
+
+      const categoryValid = category ? item.Subcategory === category : true
+
+      return priceValid && keywordValid && categoryValid
+    })
 
     res.status(200).json({ items })
   } catch (err) {
@@ -43,4 +53,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await client.close()
   }
 }
-
