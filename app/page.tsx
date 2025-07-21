@@ -226,7 +226,7 @@ export default function LoginPage() {
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <Checkbox id="remember" checked={rememberMe} onCheckedChange={setRememberMe} />
+                  <Checkbox id="remember" checked={rememberMe} onCheckedChange={(checked) => setRememberMe(!!checked)} />
                   <Label htmlFor="remember" className="text-sm text-gray-600">
                     ログイン状態を保持
                   </Label>
