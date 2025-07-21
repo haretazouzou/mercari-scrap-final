@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       query.Subcategory = category
     }
 
-    const items = await collection.find(query).limit(600).toArray()
+    const items = await collection.find().limit(600).toArray()
 
     res.status(200).json({ items })
   } catch (err) {
