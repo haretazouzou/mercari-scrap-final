@@ -273,8 +273,8 @@ export default function DashboardPage() {
   }
 
   const getDataFreshness = (product: Product) => {
-    // const hoursAgo = Math.floor((Date.now() - product.LastUpdated.getTime()) / (1000 * 60 * 60))
-    const hoursAgo = Math.floor(Date.now())
+    const lastUpdatedDate = new Date(product.LastUpdated);
+    const hoursAgo = Math.floor((Date.now() - lastUpdatedDate.getTime()) / (1000 * 60 * 60));
     if (hoursAgo < 1) return "1時間以内に更新"
     if (hoursAgo < 24) return `${hoursAgo}時間前に更新`
     const daysAgo = Math.floor(hoursAgo / 24)
@@ -646,7 +646,7 @@ export default function DashboardPage() {
                       <span className="text-xl font-bold text-blue-600">
                         ¥{product.Price.toLocaleString()}
                       </span>
-                      <span className="text-gray-500 text-xs">{getDataFreshness(mockProducts[startIndex + index])}</span>
+                      <span className="text-gray-500 text-xs">{getDataFreshness(products[startIndex + index])}</span>
                     </div>
 
                     <div className="flex items-center space-x-1">

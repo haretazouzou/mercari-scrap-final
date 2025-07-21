@@ -46,8 +46,8 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
   if (!product) return null
 
   const getDataFreshness = (product: Product) => {
-    // const hoursAgo = Math.floor((Date.now() - product.lastUpdated.getTime()) / (1000 * 60 * 60))
-    const hoursAgo = Math.floor(Date.now())
+    const lastUpdatedDate = new Date(product.LastUpdated);
+    const hoursAgo = Math.floor((Date.now() - lastUpdatedDate.getTime()) / (1000 * 60 * 60));
     if (hoursAgo < 1) return "1時間以内に更新"
     if (hoursAgo < 24) return `${hoursAgo}時間前に更新`
     const daysAgo = Math.floor(hoursAgo / 24)
