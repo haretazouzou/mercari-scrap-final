@@ -22,15 +22,16 @@ import {
 
 interface Product {
   id: string
-  title: string
-  price: number
-  image: string
-  category: string
-  subcategory: string
-  salesCount: number
-  rating: number
+  Title: string
+  Price: string
+  Image: string
+  Category: string
+  Subcategory: string
+  SalesCount: number
+  Rating: number
   mercariUrl: string
-  lastUpdated: Date
+  LastUpdated: Date 
+  SellerName:string
 }
 
 interface ProductDetailModalProps {
@@ -45,7 +46,8 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
   if (!product) return null
 
   const getDataFreshness = (product: Product) => {
-    const hoursAgo = Math.floor((Date.now() - product.lastUpdated.getTime()) / (1000 * 60 * 60))
+    // const hoursAgo = Math.floor((Date.now() - product.lastUpdated.getTime()) / (1000 * 60 * 60))
+    const hoursAgo = Math.floor(Date.now())
     if (hoursAgo < 1) return "1時間以内に更新"
     if (hoursAgo < 24) return `${hoursAgo}時間前に更新`
     const daysAgo = Math.floor(hoursAgo / 24)
@@ -76,8 +78,8 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
             <div className="space-y-4">
               <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                 <img
-                  src={product.image || "/placeholder.svg"}
-                  alt={product.title}
+                  src={product.Image || "/placeholder.svg"}
+                  alt={product.Title}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />
               </div>
@@ -101,29 +103,29 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
             {/* Product Info */}
             <div className="space-y-4">
               <div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{product.title}</h3>
-                <p className="text-sm text-gray-600">{product.subcategory}</p>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">{product.Title}</h3>
+                <p className="text-sm text-gray-600">{product.Subcategory}</p>
               </div>
 
               <div className="flex items-center space-x-4">
-                <div className="text-3xl font-bold text-blue-600">¥{product.price.toLocaleString()}</div>
+                <div className="text-3xl font-bold text-blue-600">¥{product.Price.toLocaleString()}</div>
                 <div className="flex items-center space-x-1">
                   <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                  <span className="font-medium">{product.rating}</span>
+                  <span className="font-medium">{product.Rating}</span>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <Card className="p-3">
                   <div className="text-center">
-                    <div className="text-lg font-bold text-green-600">{product.salesCount}</div>
+                    <div className="text-lg font-bold text-green-600">{product.SalesCount}</div>
                     <div className="text-sm text-gray-600">販売数</div>
                   </div>
                 </Card>
                 <Card className="p-3">
                   <div className="text-center">
                     <div className="text-lg font-bold text-purple-600">
-                      ¥{(product.price * product.salesCount).toLocaleString()}
+                      ¥{(parseInt(product.Price.replace(/[^\d]/g, "")) * product.SalesCount).toLocaleString()}
                     </div>
                     <div className="text-sm text-gray-600">推定売上</div>
                   </div>
@@ -176,7 +178,7 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
                       <DollarSign className="w-4 h-4 text-green-600" />
                       <span className="font-medium">平均価格</span>
                     </div>
-                    <div className="text-2xl font-bold text-green-600">¥{product.price.toLocaleString()}</div>
+                    <div className="text-2xl font-bold text-green-600">¥{product.Price.toLocaleString()}</div>
                     <div className="text-sm text-gray-500">過去30日間</div>
                   </Card>
 
@@ -196,7 +198,7 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
                 <Card className="p-4">
                   <h4 className="font-medium mb-4">商品説明</h4>
                   <p className="text-gray-600 leading-relaxed">
-                    この商品は{product.category}カテゴリーの人気商品です。
+                    この商品は{product.Category}カテゴリーの人気商品です。
                     高品質な素材を使用し、優れたデザインが特徴的です。
                     多くのユーザーから高い評価を得ており、リピート購入率も高い商品となっています。
                   </p>
@@ -206,19 +208,19 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
                   <h4 className="font-medium mb-4">販売者情報</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between">
+                      <span className="text-gray-600">販売者</span>
+                      <span>{product.SellerName}</span>
+                    </div>
+                    <div className="flex justify-between">
                       <span className="text-gray-600">販売者評価</span>
                       <div className="flex items-center space-x-1">
                         <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                        <span>4.8 (1,234件)</span>
+                        <span>{product.Rating}</span>
                       </div>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">発送までの日数</span>
-                      <span>1-2日</span>
-                    </div>
-                    <div className="flex justify-between">
                       <span className="text-gray-600">発送元</span>
-                      <span>東京都</span>
+                      <span>未定</span>
                     </div>
                   </div>
                 </Card>

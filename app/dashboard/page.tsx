@@ -1,5 +1,4 @@
 "use client"
-
 import { useState, useEffect, useRef, useLayoutEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
@@ -46,18 +45,19 @@ type TimePeriod = "7" | "14" | "30" | "60" | "90"
 
 interface Product {
   id: string
-  title: string
-  price: number
-  image: string
-  category: string
-  subcategory: string
-  salesCount: number
-  rating: number
+  Title: string
+  Price: number
+  Image: string
+  Category: string
+  Subcategory: string
+  SalesCount: number
+  Rating: number
   mercariUrl: string
-  lastUpdated: Date
+  LastUpdated: Date
   totalCompetitorSalesAmount: number
   totalCompetitorSalesCount: number
 }
+
 
 const mockProducts: Product[] = [
   {
@@ -118,7 +118,10 @@ const mockProducts: Product[] = [
   },
 ];
 
+const ITEMS_PER_PAGE = 6;
+
 export default function DashboardPage() {
+  const [products, setProducts] = useState<Product[]>([])
   const { user, isLoading } = useAuth()
   const [status, setStatus] = useState<ProcessingStatus>("cache")
   const [searchQuery, setSearchQuery] = useState("")
@@ -133,6 +136,17 @@ export default function DashboardPage() {
   const [showAnalysisModal, setShowAnalysisModal] = useState(false)
   const [accountSheetOpen, setAccountSheetOpen] = useState(false)
   const isMobileRef = useRef(false)
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentProducts = products.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
   // Keep track of screen size for perfect response
   useLayoutEffect(() => {
@@ -187,8 +201,6 @@ export default function DashboardPage() {
             price_max: priceRange[1],
           }),
         })
-        const [products, setProducts] = useState<Product[]>([])
-  
         const data = await res.json()
   
         console.log("Real-time scraped items:", data.items)
@@ -201,10 +213,28 @@ export default function DashboardPage() {
       }
     } else {
       // Simulate cache data fetch
-      setTimeout(() => {
+      try {
+        const res = await fetch("/api/products", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            keyword: searchQuery,
+            category: selectedCategory,
+            price_min: priceRange[0],
+            price_max: priceRange[1],
+          }),
+        })
+        const data = await res.json()
+        setProducts(data.items || []) // <--- use fetched products
         setStatus("complete")
-        setIsSearching(false)
-      }, 3000)
+        setLastUpdated(new Date())
+        console.log("Failed to fetch from DB:", data.items)
+      } catch (error) {
+        console.error("Failed to fetch from DB:", error)
+        setStatus("error")
+      }
+      setIsSearching(false)
+      
     }
   
     // Real-time status update after fetching
@@ -267,7 +297,8 @@ export default function DashboardPage() {
   }
 
   const getDataFreshness = (product: Product) => {
-    const hoursAgo = Math.floor((Date.now() - product.lastUpdated.getTime()) / (1000 * 60 * 60))
+    // const hoursAgo = Math.floor((Date.now() - product.LastUpdated.getTime()) / (1000 * 60 * 60))
+    const hoursAgo = Math.floor(Date.now())
     if (hoursAgo < 1) return "1時間以内に更新"
     if (hoursAgo < 24) return `${hoursAgo}時間前に更新`
     const daysAgo = Math.floor(hoursAgo / 24)
@@ -305,6 +336,23 @@ export default function DashboardPage() {
   const handleCompetitorAnalysis = (product: Product) => {
     setSelectedProduct(product)
     setShowAnalysisModal(true)
+  }
+
+  const getPaginationPages = () => {
+    const pagesToShow = 5
+    const half = Math.floor(pagesToShow / 2)
+    let start = Math.max(1, currentPage - half)
+    let end = Math.min(totalPages, currentPage + half)
+  
+    if (end - start + 1 < pagesToShow) {
+      if (start === 1) {
+        end = Math.min(start + pagesToShow - 1, totalPages)
+      } else if (end === totalPages) {
+        start = Math.max(1, end - pagesToShow + 1)
+      }
+    }
+  
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i)
   }
 
   return (
@@ -578,91 +626,122 @@ export default function DashboardPage() {
           </Card>
         </motion.div>
 
-        {mockProducts.map((product, index) => (
-  <motion.div
-    key={product.id || index}
-    initial={{ opacity: 0, x: -20 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ delay: index * 0.1 }}
-    className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col sm:flex-row items-start relative"
-  >
-    {/* 🏆 Ranking Badge */}
-    <div className="absolute left-[-12px] top-4 sm:top-6 z-10">
-      <span
-        className={`text-white text-sm font-bold px-3 py-1 rounded-full shadow-md
-          ${index === 0 ? "bg-yellow-400" :
-            index === 1 ? "bg-gray-400" :
-            index === 2 ? "bg-amber-600" :
-            "bg-blue-500"}`}
-      >
-        {index === 0 ? "🥇 1位" :
-         index === 1 ? "🥈 2位" :
-         index === 2 ? "🥉 3位" :
-         `${index + 1}位`}
-      </span>
+        <div className="space-y-8">
+      {/* Product Cards */}
+      <div className="space-y-6">
+        {currentProducts.map((product, index) => (
+          <motion.div
+            key={product.id || index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col sm:flex-row items-start relative"
+          >
+            {/* 🏆 Ranking Badge */}
+            <div className="absolute left-[-12px] top-4 sm:top-6 z-10">
+            {(() => {
+                const rank = startIndex + index + 1
+                if (rank === 1) return <span className="bg-yellow-400 text-white text-sm font-bold px-3 py-1 rounded-full shadow-md">🥇 1位</span>
+                if (rank === 2) return <span className="bg-gray-400 text-white text-sm font-bold px-3 py-1 rounded-full shadow-md">🥈 2位</span>
+                if (rank === 3) return <span className="bg-amber-600 text-white text-sm font-bold px-3 py-1 rounded-full shadow-md">🥉 3位</span>
+                return <span className="bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-md">{rank}位</span>
+              })()}
+            </div>
+
+            {/* Product Image */}
+            <div
+              className="w-full sm:w-32 h-48 sm:h-32 bg-gray-200 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => handleProductDetail(product)}
+            >
+              <img
+                src={product.Image}
+                alt="商品画像"
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Product Details */}
+            <div className="p-4 flex-1">
+              <h3 className="text-lg font-semibold text-gray-800">{product.Title}</h3>
+              <p className="text-gray-600 text-sm mb-2">{product.Subcategory}</p>
+
+              <div className="flex items-center justify-between">
+                <div className="flex flex-col">
+                  <span className="text-xl font-bold text-blue-600">
+                    ¥{product.Price.toLocaleString()}
+                  </span>
+                  <span className="text-gray-500 text-xs">{getDataFreshness(mockProducts[startIndex + index])}</span>
+                </div>
+
+                <div className="flex items-center space-x-1">
+                  <TrendingUp className="w-4 h-4 text-green-500" />
+                  <span className="text-sm text-gray-600">{product.SalesCount}+ 件</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex sm:flex-col gap-2 mt-3 sm:mt-0 sm:ml-4 p-4">
+              <Button
+                size="sm"
+                variant="outline"
+                className="flex-1 sm:flex-none bg-transparent w-full sm:ml-[-2px] mt-[2px]"
+                onClick={() => handleProductDetail(product)}
+              >
+                詳細
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white w-full sm:ml-[-2px] mt-[2px]"
+                onClick={() => handleCompetitorAnalysis(product)}
+              >
+                競合分析
+              </Button>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center mt-4 space-x-2">
+        <button
+          onClick={() => goToPage(currentPage - 1)}
+          disabled={currentPage === 1}
+          className={`px-3 py-1 rounded-lg text-sm font-medium border ${
+            currentPage === 1 ? "text-gray-400 border-gray-300" : "text-blue-600 border-blue-400 hover:bg-blue-50"
+          }`}
+        >
+          ← 前へ
+        </button>
+
+        {[...Array(totalPages)].map((_, idx) => {
+          {getPaginationPages().map((page) => (
+            <button
+              key={page}
+              onClick={() => goToPage(page)}
+              className={`px-3 py-1 rounded-lg text-sm font-medium border transition ${
+                currentPage === page
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "border-gray-300 text-gray-600 hover:bg-gray-100"
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+        })}
+
+        <button
+          onClick={() => goToPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className={`px-3 py-1 rounded-lg text-sm font-medium border ${
+            currentPage === totalPages ? "text-gray-400 border-gray-300" : "text-blue-600 border-blue-400 hover:bg-blue-50"
+          }`}
+        >
+          次へ →
+        </button>
+      </div>
     </div>
-
-    {/* Product Image */}
-    <div
-      className="w-full sm:w-32 h-48 sm:h-32 bg-gray-200 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
-      onClick={() => handleProductDetail(product)}
-    >
-      <img
-        src={product.image}
-        alt="商品画像"
-        className="w-full h-full object-cover"
-      />
-    </div>
-
-    {/* Product Details */}
-    <div className="p-4 flex-1">
-  <h3 className="text-lg font-semibold text-gray-800">{mockProducts[index].title}</h3>
-  <p className="text-gray-600 text-sm mb-2">
-    {mockProducts[index].category} &gt; {mockProducts[index].subcategory}
-  </p>
-
-  <div className="flex items-center justify-between">
-    <div className="flex flex-col">
-      <span className="text-xl font-bold text-blue-600">
-        ¥{mockProducts[index].price.toLocaleString()}
-      </span>
-      <span className="text-gray-500 text-xs">{getDataFreshness(mockProducts[index])}</span>
-    </div>
-
-    <div className="flex items-center space-x-1">
-      <TrendingUp className="w-4 h-4 text-green-500" />
-      <span className="text-sm text-gray-600">{mockProducts[index].salesCount}+ 件</span>
-    </div>
-    <div className="mt-2 text-sm text-gray-600 space-y-1">
-    <p>競合の総売上金額: <span className="font-semibold text-blue-700">¥{mockProducts[index].totalCompetitorSalesAmount.toLocaleString()}</span></p>
-    <p>競合の総売上個数: <span className="font-semibold text-blue-700">{mockProducts[index].totalCompetitorSalesCount} 件</span></p>
-  </div>
-  </div>
-
-  {/* NEW - Competitor Total Info */}
-</div>
-
-    {/* Action Buttons */}
-    <div className="flex sm:flex-col gap-2 mt-3 sm:mt-0 sm:ml-4">
-      <Button
-        size="sm"
-        variant="outline"
-        className="flex-1 sm:flex-none bg-transparent w-full sm:ml-[-2px] mt-[2px]"
-        onClick={() => handleProductDetail(product)}
-      >
-        詳細
-      </Button>
-      <Button
-        size="sm"
-        variant="outline"
-        className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white w-full sm:ml-[-2px] mt-[2px]"
-        onClick={() => handleCompetitorAnalysis(product)}
-      >
-        競合分析
-      </Button>
-    </div>
-  </motion.div>
-))}
 
         {/* Modals */}
         <ProductDetailModal

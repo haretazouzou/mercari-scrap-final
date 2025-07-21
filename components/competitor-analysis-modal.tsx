@@ -10,15 +10,15 @@ import { BarChart3, TrendingUp, Users, DollarSign, Package, Star, ExternalLink, 
 
 interface Product {
   id: string
-  title: string
-  price: number
-  image: string
-  category: string
-  subcategory: string
-  salesCount: number
-  rating: number
+  Title: string
+  Price: number
+  Image: string
+  Category: string
+  Subcategory: string
+  SalesCount: number
+  Rating: number
   mercariUrl: string
-  lastUpdated: Date
+  LastUpdated: Date
 }
 
 interface Competitor {
@@ -129,7 +129,7 @@ export function CompetitorAnalysisModal({ product, isOpen, onClose }: Competitor
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <BarChart3 className="w-5 h-5" />
-            <span>競合分析 - {product.title}</span>
+            <span>競合分析 - {product.Title}</span>
           </DialogTitle>
         </DialogHeader>
 
@@ -273,48 +273,48 @@ export function CompetitorAnalysisModal({ product, isOpen, onClose }: Competitor
                         <div className="text-gray-500 mb-1">価格差</div>
                         <div
                           className={`font-semibold ${
-                            competitor.price < product.price
+                            competitor.price < product.Price
                               ? "text-red-600"
-                              : competitor.price > product.price
+                              : competitor.price > product.Price
                                 ? "text-green-600"
                                 : "text-gray-600"
                           }`}
                         >
-                          {competitor.price < product.price && "-"}
-                          {competitor.price > product.price && "+"}¥
-                          {Math.abs(competitor.price - product.price).toLocaleString()}
+                          {competitor.price < product.Price && "-"}
+                          {competitor.price > product.Price && "+"}¥
+                          {Math.abs(competitor.price - product.Price).toLocaleString()}
                         </div>
                       </div>
                       <div className="text-center">
                         <div className="text-gray-500 mb-1">売上差</div>
                         <div
                           className={`font-semibold ${
-                            competitor.salesCount > product.salesCount
+                            competitor.salesCount > product.SalesCount
                               ? "text-red-600"
-                              : competitor.salesCount < product.salesCount
+                              : competitor.salesCount < product.SalesCount
                                 ? "text-green-600"
                                 : "text-gray-600"
                           }`}
                         >
-                          {competitor.salesCount > product.salesCount && "+"}
-                          {competitor.salesCount < product.salesCount && "-"}
-                          {Math.abs(competitor.salesCount - product.salesCount).toLocaleString()}
+                          {competitor.salesCount > product.SalesCount && "+"}
+                          {competitor.salesCount < product.SalesCount && "-"}
+                          {Math.abs(competitor.salesCount - product.SalesCount).toLocaleString()}
                         </div>
                       </div>
                       <div className="text-center">
                         <div className="text-gray-500 mb-1">評価差</div>
                         <div
                           className={`font-semibold ${
-                            competitor.rating > product.rating
+                            competitor.rating > product.Rating
                               ? "text-red-600"
-                              : competitor.rating < product.rating
+                              : competitor.rating < product.Rating
                                 ? "text-green-600"
                                 : "text-gray-600"
                           }`}
                         >
-                          {competitor.rating > product.rating && "+"}
-                          {competitor.rating < product.rating && "-"}
-                          {Math.abs(competitor.rating - product.rating).toFixed(1)}%
+                          {competitor.rating > product.Rating && "+"}
+                          {competitor.rating < product.Rating && "-"}
+                          {Math.abs(competitor.rating - product.Rating).toFixed(1)}%
                         </div>
                       </div>
                     </div>
@@ -331,8 +331,8 @@ export function CompetitorAnalysisModal({ product, isOpen, onClose }: Competitor
               <div>
                 <h4 className="font-medium text-gray-700 mb-2">価格ポジション</h4>
                 <p className="text-sm text-gray-600">
-                  あなたの商品価格（¥{product.price.toLocaleString()}）は市場平均より
-                  {product.price >
+                  あなたの商品価格（¥{product.Price.toLocaleString()}）は市場平均より
+                  {product.Price >
                   Math.round(mockCompetitors.reduce((sum, c) => sum + c.price, 0) / mockCompetitors.length)
                     ? "高く"
                     : "低く"}
@@ -342,7 +342,7 @@ export function CompetitorAnalysisModal({ product, isOpen, onClose }: Competitor
               <div>
                 <h4 className="font-medium text-gray-700 mb-2">競合優位性</h4>
                 <p className="text-sm text-gray-600">
-                  販売数では{mockCompetitors.filter((c) => c.salesCount < product.salesCount).length}社を上回っており、
+                  販売数では{mockCompetitors.filter((c) => c.salesCount < product.SalesCount).length}社を上回っており、
                   良好なポジションにあります。
                 </p>
               </div>
