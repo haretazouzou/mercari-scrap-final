@@ -1,4 +1,9 @@
 "use client"
+declare global {
+  interface Window {
+    google: any; // or a more specific type if available
+  }
+}
 
 import type React from "react"
 
@@ -10,7 +15,7 @@ import { Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Sparkles, Mail, Lock, Loader2 } from "lucide-react"
+import { Sparkles, Mail, Lock, ArrowLeft, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { GoogleIcon } from "@/components/icons/google-icon"
 import { Separator } from "@/components/ui/separator"
@@ -18,6 +23,7 @@ import { authenticateUser, authenticateWithGoogle, generateToken, saveSession } 
 import type { AuthSession } from "@/lib/auth"
 import logo from "../public/logo.png"
 import Image from "next/image"
+import { useEffect } from "react"
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -26,6 +32,18 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false)
   const [error, setError] = useState("")
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+  const [someBoolean, setSomeBoolean] = useState<boolean>(false);
+
+
+  useEffect(() => {
+    if (!window.google && typeof window !== "undefined") {
+      const script = document.createElement("script")
+      script.src = "https://accounts.google.com/gsi/client"
+      script.async = true
+      script.defer = true
+      document.body.appendChild(script)
+    }
+  }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -33,47 +51,86 @@ export default function LoginPage() {
     setError("")
 
     try {
-      const user = await authenticateUser(email, password)
-
-      if (user) {
-        const token = generateToken(user)
-        const session: AuthSession = {
-          user,
-          token,
-          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        }
-
-        saveSession(session)
-        window.location.href = "/dashboard"
-      } else {
-        setError("メールアドレスまたはパスワードが正しくありません")
-      }
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "ログインに失敗しました")
+      // Store JWT and user info
+      localStorage.setItem("auth-token", data.token)
+      localStorage.setItem("auth-user", JSON.stringify(data.user))
+      window.location.href = "/dashboard"
     } catch (error) {
-      setError("ログインに失敗しました")
+      setError(error instanceof Error ? error.message : "ログインに失敗しました")
     } finally {
       setIsLoading(false)
     }
   }
+  
 
-  const handleGoogleSignIn = async () => {
-    setIsGoogleLoading(true)
-    try {
-      const user = await authenticateWithGoogle()
-      const token = generateToken(user)
-      const session: AuthSession = {
-        user,
-        token,
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      }
-
-      saveSession(session)
-      window.location.href = "/dashboard"
-    } catch (error) {
-      setError("Google認証に失敗しました")
-    } finally {
-      setIsGoogleLoading(false)
-    }
+  interface TokenResponse {
+    access_token: string;
+    expires_in: number;
+    scope: string;
+    token_type: string;
   }
+  
+  const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true);
+    setError("");
+  
+    try {
+      if (!window.google) throw new Error("Google API not loaded");
+  
+      const client = window.google.accounts.oauth2.initTokenClient({
+        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+        scope: "openid email profile",
+        callback: async (response: TokenResponse) => {
+          if (!response.access_token) {
+            setError("Google認証に失敗しました");
+            setIsGoogleLoading(false);
+            return;
+          }
+  
+          const userInfoRes = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+            headers: { Authorization: `Bearer ${response.access_token}` },
+          });
+  
+          const userInfo = await userInfoRes.json();
+  
+          if (!userInfo.sub) {
+            setError("Google認証に失敗しました");
+            setIsGoogleLoading(false);
+            return;
+          }
+  
+          const backendRes = await fetch("/api/auth/google", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ idToken: response.access_token }),
+          });
+  
+          const backendData = await backendRes.json();
+  
+          if (!backendRes.ok) {
+            throw new Error(backendData.error || "Google認証に失敗しました");
+          }
+  
+          localStorage.setItem("auth-token", backendData.token);
+          localStorage.setItem("auth-user", JSON.stringify(backendData.user));
+          window.location.href = "/dashboard";
+        },
+      });
+  
+      client.requestAccessToken();
+    } catch (error) {
+      setError("Google認証に失敗しました");
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center p-6">
@@ -113,6 +170,17 @@ export default function LoginPage() {
       >
         {/* Header */}
         <div className="text-center mb-8">
+  {/* Back to Home */}
+  <Link href="/">
+    <motion.div
+      className="inline-flex items-center space-x-2 mb-6 hover:scale-105 transition-transform"
+      whileHover={{ scale: 1.05 }}
+    >
+      <ArrowLeft className="w-5 h-5 text-gray-600" />
+      <span className="text-gray-600">ホームに戻る</span>
+    </motion.div>
+  </Link>
+
   {/* Logo - Separate Block */}
   <motion.div
     className="w-full flex justify-center mb-3"
@@ -147,6 +215,9 @@ export default function LoginPage() {
     アカウントにログインしてください
   </motion.p>
 </div>
+
+
+
         {/* Login Form */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -226,7 +297,7 @@ export default function LoginPage() {
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <Checkbox id="remember" checked={rememberMe} onCheckedChange={(checked) => setRememberMe(!!checked)} />
+                  <Checkbox id="remember" checked={rememberMe} onCheckedChange={(checked) => setSomeBoolean(checked === true)} />
                   <Label htmlFor="remember" className="text-sm text-gray-600">
                     ログイン状態を保持
                   </Label>

@@ -695,8 +695,8 @@ export default function DashboardPage() {
                 key={page}
                 onClick={() => goToPage(page)}
                 className={`px-3 py-1 rounded-lg text-sm font-medium border transition ${currentPage === page
-                    ? "bg-blue-600 text-white border-blue-600"
-                    : "border-gray-300 text-gray-600 hover:bg-gray-100"
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "border-gray-300 text-gray-600 hover:bg-gray-100"
                   }`}
               >
                 {page}

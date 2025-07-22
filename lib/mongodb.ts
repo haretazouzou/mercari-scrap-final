@@ -15,7 +15,7 @@ export async function getMongoClient() {
 export async function getDb() {
   if (!db) {
     const client = await getMongoClient()
-    db = client.db("test")
+    db = client.db("")
   }
   return db
 } 
