@@ -238,7 +238,7 @@ export default function DashboardPage() {
       // Free/Standard: Always show data freshness and cache message
       return {
         icon: <Database className="w-4 h-4 text-blue-500" />,
-        text: `${daysSinceUpdate === 0 ? "本日" : `${daysSinceUpdate}日前`}のデータを表示中、リアルタイム検索を行うとリアルタイムデータが表示されます。※リアルタイム検索はスタンダードプラン・プロプランでご利用いただけます`,
+        text: `${daysSinceUpdate === 0 ? "本日" : `${daysSinceUpdate}日前`}のデータを表示中、リアルタイム検索を行うとリアルタイムデータが表示されます。`,
         color: "bg-blue-50 text-blue-700 border-blue-200",
       }
     }
@@ -647,11 +647,6 @@ export default function DashboardPage() {
                         ¥{product.Price.toLocaleString()}
                       </span>
                       <span className="text-gray-500 text-xs">{getDataFreshness(products[startIndex + index])}</span>
-                    </div>
-
-                    <div className="flex items-center space-x-1">
-                      <TrendingUp className="w-4 h-4 text-green-500" />
-                      <span className="text-sm text-gray-600">{product.SalesCount}+ 件</span>
                     </div>
                   </div>
                 </div>
