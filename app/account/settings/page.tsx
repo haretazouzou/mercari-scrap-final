@@ -73,15 +73,48 @@ export default function SettingsPage() {
   }
 
   const handleSave = async () => {
+    if (!user?._id) return
+  
     setIsSaving(true)
     setMessage(null)
-
-    // Simulate API call
-    setTimeout(() => {
+  
+    try {
+      const res = await fetch("/api/account/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user._id,
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          currentPassword: formData.currentPassword,
+          newPassword: formData.newPassword,
+          confirmPassword: formData.confirmPassword,
+        }),
+      })
+  
+      const data = await res.json()
       setIsSaving(false)
-      setMessage({ type: 'success', text: '設定が正常に更新されました' })
-    }, 2000)
+  
+      if (!res.ok) {
+        setMessage({ type: "error", text: data.message || "更新に失敗しました" })
+        return
+      }
+  
+      setMessage({ type: "success", text: data.message || "更新に成功しました" })
+      setFormData((prev) => ({
+        ...prev,
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      }))
+    } catch (error) {
+      console.error("Error:", error)
+      setIsSaving(false)
+      setMessage({ type: "error", text: "更新中にエラーが発生しました" })
+    }
   }
+  
 
   const handleDeleteAccount = async () => {
     if (!confirm('本当にアカウントを削除しますか？この操作は取り消せません。')) {
