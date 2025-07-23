@@ -119,38 +119,134 @@ export default function DashboardPage() {
   const categories = {
     "ファッション": {
       "レディース": [
-        "トップス", "ジャケット/アウター", "パンツ", "スカート", "ワンピース", "靴", "バッグ", "アクセサリー", "小物", "時計", "ウィッグ/エクステ", "浴衣/水着", "スーツ/フォーマル/ドレス", "マタニティ", "その他"
+        "トップス", "ジャケット/アウター", "パンツ", "スカート", "ワンピース",
+        "靴", "バッグ", "アクセサリー", "小物", "時計",
+        "ウィッグ/エクステ", "浴衣/水着", "スーツ/フォーマル/ドレス", "マタニティ", "その他"
       ],
       "メンズ": [
-        "トップス", "ジャケット/アウター", "パンツ", "靴", "バッグ", "スーツ", "帽子", "アクセサリー", "小物", "時計", "水着", "レッグウェア", "アンダーウェア", "その他"
+        "トップス", "ジャケット/アウター", "パンツ", "靴", "バッグ", "スーツ",
+        "帽子", "アクセサリー", "小物", "時計", "水着",
+        "レッグウェア", "アンダーウェア", "その他"
       ],
       "キッズ/ベビー": [
-        "ベビー服(女の子用)", "ベビー服(男の子用)", "キッズ服(女の子用)", "キッズ服(男の子用)", "靴", "子ども用ファッション小物", "おむつ/トイレ/バス", "外出/移動用品", "授乳/食事", "ベビー家具/寝具/室内用品", "おもちゃ", "行事/記念品", "その他"
+        "ベビー服(女の子用)", "ベビー服(男の子用)", "キッズ服(女の子用)", "キッズ服(男の子用)",
+        "靴", "子ども用ファッション小物", "おむつ/トイレ/バス", "外出/移動用品", "授乳/食事",
+        "ベビー家具/寝具/室内用品", "おもちゃ", "行事/記念品", "その他"
       ]
     },
+
     "家電・スマホ・カメラ": {
       "スマートフォン/携帯電話": [
         "スマートフォン本体", "バッテリー/充電器", "携帯電話本体", "PHS本体", "その他"
       ],
       "パソコン": [
-        "ノートPC", "デスクトップ型PC", "ディスプレイ", "周辺機器", "PCパーツ", "PCアクセサリー", "ソフトウェア", "その他"
+        "ノートPC", "デスクトップ型PC", "ディスプレイ", "周辺機器",
+        "PCパーツ", "PCアクセサリー", "ソフトウェア", "その他"
       ],
       "家電": [
-        "テレビ", "オーディオ機器", "美容/健康家電", "冷暖房/空調", "生活家電", "キッチン家電", "洗濯機", "掃除機", "照明", "電話/ファクシミリ", "その他"
+        "テレビ", "オーディオ機器", "美容/健康家電", "冷暖房/空調", "生活家電",
+        "キッチン家電", "洗濯機", "掃除機", "照明", "電話/ファクシミリ", "その他"
+      ],
+      "カメラ": [
+        "デジタルカメラ", "ビデオカメラ", "レンズ(単焦点)", "レンズ(ズーム)", "フィルムカメラ", "その他"
       ]
     },
+
     "ホーム・キッチン": {
       "キッチン/食器": [
         "食器", "調理器具", "収納/キッチン雑貨", "弁当用品", "カトラリー(スプーン等)", "テーブル用品", "その他"
       ],
       "インテリア/住まい/小物": [
-        "カーテン/ブラインド", "ラグ/カーペット/マット", "ソファ/ソファベッド", "椅子/チェア", "収納家具", "照明", "寝具", "インテリア小物", "時計", "その他"
+        "カーテン/ブラインド", "ラグ/カーペット/マット", "ソファ/ソファベッド", "椅子/チェア",
+        "収納家具", "照明", "寝具", "インテリア小物", "時計", "その他"
       ],
       "日用品/生活雑貨/旅行": [
         "タオル/バス用品", "掃除用具", "洗濯用品", "防災関連グッズ", "旅行用品", "その他"
       ]
+    },
+
+    "本・音楽・ゲーム": {
+      "本": [
+        "文学/小説", "ビジネス/経済", "趣味/スポーツ/実用", "アート/エンタメ", "雑誌", "その他"
+      ],
+      "音楽": ["CD", "レコード", "カセットテープ", "その他"],
+      "ゲーム": [
+        "テレビゲーム", "携帯用ゲーム本体", "携帯用ゲームソフト", "PCゲーム", "その他"
+      ]
+    },
+
+    "おもちゃ・ホビー・グッズ": {
+      "おもちゃ": ["ぬいぐるみ", "ブロック", "ラジコン", "知育玩具", "その他"],
+      "ホビー": [
+        "フィギュア", "プラモデル", "鉄道模型", "ミニカー", "トレーディングカード",
+        "コレクション", "ミリタリー", "美術品", "アート用品", "その他"
+      ],
+      "グッズ": {
+        "通常": ["キャラクターグッズ", "コミック/アニメグッズ", "その他"],
+        "タレントグッズ": ["その他", "ブランド", "no"]
+      }
+    },
+
+    "コスメ・香水・美容": {
+      "ベースメイク": ["ファンデーション", "化粧下地", "コンシーラー", "その他"],
+      "メイクアップ": ["アイシャドウ", "マスカラ", "アイライナー", "口紅", "リップグロス", "チーク", "その他"],
+      "スキンケア": ["化粧水", "乳液", "美容液", "クリーム", "パック/フェイスマスク", "その他"],
+      "ヘアケア": ["シャンプー", "トリートメント", "ヘアオイル", "スタイリング剤", "その他"],
+      "香水": ["香水(女性用)", "香水(男性用)", "ユニセックス", "その他"]
+    },
+
+    "スポーツ・レジャー": {
+      "ゴルフ": ["クラブ", "ウェア", "バッグ", "シューズ", "アクセサリー", "その他"],
+      "フィッシング": ["ロッド", "リール", "ルアー用品", "ウエア", "その他"],
+      "自転車": ["自転車本体", "パーツ", "アクセサリー", "ウェア", "その他"],
+      "アウトドア": ["テント/タープ", "寝袋/シュラフ", "ランタン/ライト", "調理器具", "登山用品", "その他"],
+      "その他スポーツ": ["野球", "サッカー/フットサル", "テニス", "スノーボード", "スキー", "トレーニング/エクササイズ", "その他"]
+    },
+
+    "ハンドメイド": {
+      "アクセサリー/時計": ["ピアス", "イヤリング", "ネックレス", "ブレスレット", "指輪", "時計", "その他"],
+      "ファッション/小物": ["バッグ", "財布/ケース", "帽子", "ストール/スヌード", "その他"],
+      "インテリア/家具": ["家具", "雑貨", "照明", "アート", "その他"],
+      "素材/材料": ["ビーズ", "布", "糸", "金具", "その他"]
+    },
+
+    "チケット": {
+      "音楽": ["男性アイドル", "女性アイドル", "韓流", "国内アーティスト", "海外アーティスト", "その他"],
+      "スポーツ": ["野球", "サッカー", "テニス", "格闘技/プロレス", "ゴルフ", "バスケットボール", "その他"],
+      "演劇/芸能": ["ミュージカル", "演劇", "伝統芸能", "落語/お笑い", "その他"],
+      "映画": ["邦画", "洋画", "アニメ", "その他"],
+      "イベント": ["展示会", "フェス", "その他"],
+      "施設利用券": ["遊園地/テーマパーク", "温泉", "その他"],
+      "優待券/割引券": ["飲食", "ショッピング", "その他"]
+    },
+
+    "自動車・オートバイ": {
+      "自動車本体": ["国内自動車本体", "輸入自動車本体"],
+      "自動車タイヤ/ホイール": ["タイヤ/ホイールセット", "タイヤ", "ホイール", "その他"],
+      "自動車パーツ": ["サスペンション", "ブレーキ", "エンジン", "マフラー", "その他"],
+      "自動車アクセサリー": ["カーナビ", "ETC", "ドライブレコーダー", "その他"],
+      "オートバイ車体": ["国内オートバイ本体", "輸入オートバイ本体"],
+      "オートバイパーツ": ["エンジン", "マフラー", "サスペンション", "その他"],
+      "オートバイアクセサリー": ["ヘルメット/シールド", "ウェア", "グローブ", "その他"]
+    },
+
+    "食品": {
+      "菓子": ["和菓子", "洋菓子", "スナック", "チョコレート", "その他"],
+      "米": ["白米", "玄米", "その他"],
+      "野菜": ["根菜", "葉物", "果菜", "その他"],
+      "果物": ["りんご", "みかん", "ぶどう", "その他"],
+      "飲料": ["お茶", "コーヒー", "ジュース", "その他"],
+      "酒": ["日本酒", "焼酎", "ワイン", "ビール", "その他"]
+    },
+
+    "その他": {
+      "ペット用品": ["犬用品", "猫用品", "小動物用品", "魚用品/水草", "爬虫類/両生類用品", "鳥用品", "その他"],
+      "アンティーク/コレクション": ["アンティーク家具", "コレクション", "美術品", "その他"],
+      "文房具/事務用品": ["筆記具", "ノート/メモ帳", "ファイル/バインダー", "事務機器", "その他"],
+      "その他": ["その他"]
     }
   }
+
 
   const timePeriods = [
     { value: "7", label: "過去7日間" },
@@ -331,6 +427,34 @@ export default function DashboardPage() {
     return Array.from({ length: end - start + 1 }, (_, i) => start + i)
   }
 
+  const [selectedMain, setSelectedMain] = useState<string | null>(null)
+  const [selectedSub, setSelectedSub] = useState<string | null>(null)
+  const [selectedFinal, setSelectedFinal] = useState<string | null>(null)
+
+  const resetFromLevel = (level: "main" | "sub") => {
+    if (level === "main") {
+      setSelectedMain(null)
+      setSelectedSub(null)
+      setSelectedFinal(null)
+    } else if (level === "sub") {
+      setSelectedSub(null)
+      setSelectedFinal(null)
+    }
+  }
+
+  const handleMainChange = (value: string) => {
+    setSelectedMain(value)
+    resetFromLevel("sub")
+  }
+
+  const handleSubChange = (value: string) => {
+    setSelectedSub(value)
+    setSelectedFinal(null)
+  }
+
+  const handleFinalChange = (value: string) => {
+    setSelectedFinal(value)
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
       {/* Header */}
@@ -494,33 +618,69 @@ export default function DashboardPage() {
               {/* Category and Price Range */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-gray-700 font-medium text-sm">カテゴリー</Label>
-                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                    <SelectTrigger className="h-12">
-                      <SelectValue placeholder="カテゴリーを選択" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.entries(categories).map(([mainCategory, subCategories]) => (
-                        <div key={mainCategory}>
-                          <div className="px-2 py-1 text-sm font-semibold text-gray-700 bg-gray-50">{mainCategory}</div>
-                          {Object.entries(subCategories).map(([subCategory, items]) => (
-                            <div key={subCategory}>
-                              <div className="px-4 py-1 text-sm text-gray-600">{subCategory}</div>
-                              {items.map((item) => (
-                                <SelectItem
-                                  key={item}
-                                  value={`${mainCategory} > ${subCategory} > ${item}`}
-                                  className="pl-8"
-                                >
-                                  {item}
-                                </SelectItem>
-                              ))}
-                            </div>
+                      {/* Main Category */}
+                      <div>
+                        <label className="block font-bold mb-1">カテゴリー</label>
+                        <select
+                          className="w-full border rounded px-3 py-2"
+                          value={selectedMain ?? ""}
+                          onChange={(e) => handleMainChange(e.target.value)}
+                        >
+                          <option value="">選択してください</option>
+                          {Object.keys(categories).map((main) => (
+                            <option key={main} value={main}>
+                              {main}
+                            </option>
                           ))}
+                        </select>
+                      </div>
+
+                      {/* Subcategory */}
+                      {selectedMain && (
+                        <div>
+                          <label className="block font-bold mb-1">サブカテゴリー</label>
+                          <select
+                            className="w-full border rounded px-3 py-2"
+                            value={selectedSub ?? ""}
+                            onChange={(e) => handleSubChange(e.target.value)}
+                          >
+                            <option value="">選択してください</option>
+                            {Object.keys(categories[selectedMain] || {}).map((sub) => (
+                              <option key={sub} value={sub}>
+                                {sub}
+                              </option>
+                            ))}
+                          </select>
                         </div>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                      )}
+
+                      {/* Final Category */}
+                      {selectedMain && selectedSub && (
+                        <div>
+                          <label className="block font-bold mb-1">詳細カテゴリー</label>
+                          <select
+                            className="w-full border rounded px-3 py-2"
+                            value={selectedFinal ?? ""}
+                            onChange={(e) => handleFinalChange(e.target.value)}
+                          >
+                            <option value="">選択してください</option>
+                            {(categories[selectedMain][selectedSub] || []).map((item: string) => (
+                              <option key={item} value={item}>
+                                {item}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+
+                      {/* Result */}
+                      {selectedMain && selectedSub && selectedFinal && (
+                        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
+                          <p className="text-sm text-gray-700">
+                             選択中: <strong>{`${selectedMain} > ${selectedSub} > ${selectedFinal}`}</strong>
+                          </p>
+                        </div>
+                      )}
                 </div>
 
                 <div className="space-y-2">
